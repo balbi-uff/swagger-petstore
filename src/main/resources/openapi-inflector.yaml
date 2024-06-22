@@ -1,0 +1,145 @@
+swagger: "2.0"
+info:
+  description: >
+    This is a sample Pet Store Server based on the OpenAPI 3.0 specification. You can find out more about
+    Swagger at [http://swagger.io](http://swagger.io). In the third iteration of the pet store, we've switched to the design first approach!
+    You can now help us improve the API whether it's by making changes to the definition itself or to the code.
+    That way, with time, we can improve the API in general, and expose some of the new features in OAS3.
+
+    Some useful links:
+    - [The Pet Store repository](https://github.com/swagger-api/swagger-petstore)
+    - [The source API definition for the Pet Store](https://github.com/swagger-api/swagger-petstore/blob/master/src/main/resources/openapi.yaml)
+  version: "1.0.20-SNAPSHOT"
+  title: "Swagger Petstore - OpenAPI 3.0"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+
+basePath: /v3
+
+# Reference to the OpenAPI (Swagger) specification
+swaggerYaml: "openapi.yaml"
+
+# Global configuration settings
+global:
+  debug: true
+  errors:
+    default:
+      code: 500
+      message: "An unexpected error occurred"
+
+# Controllers configuration
+controllers:
+  # Maps paths to controller classes
+  - package: io.swagger.controllers
+    class: PetController
+  - package: io.swagger.controllers
+    class: StoreController
+  - package: io.swagger.controllers
+    class: UserController
+
+# Security configuration
+securityDefinitions:
+  petstore_auth:
+    type: oauth2
+    flows:
+      implicit:
+        authorizationUrl: "https://petstore.swagger.io/oauth/authorize"
+        scopes:
+          write:pets: "modify pets in your account"
+          read:pets: "read your pets"
+  api_key:
+    type: apiKey
+    name: api_key
+    in: header
+
+paths:
+  /pet:
+    post:
+      operationId: addPet
+      security:
+        - petstore_auth:
+            - 'write:pets'
+            - 'read:pets'
+    put:
+      operationId: updatePet
+      security:
+        - petstore_auth:
+            - 'write:pets'
+            - 'read:pets'
+  /pet/findByStatus:
+    get:
+      operationId: findPetsByStatus
+      security:
+        - petstore_auth:
+            - 'write:pets'
+            - 'read:pets'
+  /pet/findByTags:
+    get:
+      operationId: findPetsByTags
+      security:
+        - petstore_auth:
+            - 'write:pets'
+            - 'read:pets'
+  '/pet/{petId}':
+    get:
+      operationId: getPetById
+      security:
+        - api_key: []
+        - petstore_auth:
+            - 'write:pets'
+            - 'read:pets'
+    post:
+      operationId: updatePetWithForm
+      security:
+        - petstore_auth:
+            - 'write:pets'
+            - 'read:pets'
+    delete:
+      operationId: deletePet
+      security:
+        - petstore_auth:
+            - 'write:pets'
+            - 'read:pets'
+  '/pet/{petId}/uploadImage':
+    post:
+      operationId: uploadFile
+      security:
+        - petstore_auth:
+            - 'write:pets'
+            - 'read:pets'
+  /store/inventory:
+    get:
+      operationId: getInventory
+      security:
+        - api_key: []
+  /store/order:
+    post:
+      operationId: placeOrder
+  '/store/order/{orderId}':
+    get:
+      operationId: getOrderById
+    delete:
+      operationId: deleteOrder
+  /user:
+    post:
+      operationId: createUser
+  /user/createWithList:
+    post:
+      operationId: createUsersWithListInput
+  /user/login:
+    get:
+      operationId: loginUser
+  /user/logout:
+    get:
+      operationId: logoutUser
+  '/user/{username}':
+    get:
+      operationId: getUserByName
+    put:
+      operationId: updateUser
+    delete:
+      operationId: deleteUser
