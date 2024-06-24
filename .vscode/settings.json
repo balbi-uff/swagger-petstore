@@ -1,0 +1,5 @@
+{
+    "karateRunner.core.environment": "E:\\ADR\\Documentos\\TCC\\Códigos\\swagger-petstore\\src\\test\\java",
+    "karateRunner.tests.activityBarDisplayType": "Tag",
+    "karateRunner.karateRunner.default": "--name 'Add'"
+}
